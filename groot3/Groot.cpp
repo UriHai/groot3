@@ -1,9 +1,16 @@
 #include <iostream>
 #include <cmath>
 
+using std::cin;
+using std::cout;
+using std::endl;
+using std::sqrt;
+using std::numeric_limits;
+using std::streamsize;
+
 // Ignore all characters in stdin up to and including
 void ignoreLine() {
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
 /**
@@ -12,9 +19,8 @@ void ignoreLine() {
  * @return wether the extraction failed
  */
 bool clearFailedExtraction() {
-    if (!std::cin) {
-        std::cin.clear();
-        ignoreLine();
+    if (!cin) {
+        cin.clear();
         return true;
     }
 
@@ -27,7 +33,7 @@ bool clearFailedExtraction() {
  * @return whether stdin has unextracted input
  */
 bool hasUnextractedInput() {
-    return !std::cin.eof() && std::cin.peek() != '\n';
+    return !cin.eof() && cin.peek() != '\n';
 }
 
 /**
@@ -38,16 +44,12 @@ bool hasUnextractedInput() {
 double getDouble() {
     double number = 0;
     while (true) {
-        std::cout << "Enter a number: ";
-        std::cin >> number;
+        cout << "Enter a number: ";
+        cin >> number;
         // clearFailedExtraction() will return true if std::cin.fail() (or simply !std::cin) i.e. if the extraction failed
-        if (clearFailedExtraction()) {
-            std::cout << "Invalid input. Please try again" << std::endl;
-            continue;
-        }
-        if (hasUnextractedInput()) {
+        if (clearFailedExtraction() || hasUnextractedInput()) {
             ignoreLine();
-            std::cout << "Invalid input. Please try again" << std::endl;
+            cout << "Invalid input. Please try again" << endl;
             continue;
         }
 
@@ -61,12 +63,12 @@ int main() {
 
     number = getDouble();
     while (number < 0) {
-        std::cout << "Number must be non-negative!" << std::endl;
+        cout << "Number must be non-negative!" << endl;
         number = getDouble();
     }
 
-    squareRoot = std::sqrt(number);
-    std::cout << "The sqaure root of the number is: " << squareRoot << std::endl;
+    squareRoot = sqrt(number);
+    cout << "The sqaure root of the number is: " << squareRoot << endl;
 
     return 0;
 }
